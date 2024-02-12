@@ -1,0 +1,183 @@
+<!-- vandalism_register.html -->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+ <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vandalism Register</title>
+  <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            margin: 20px;
+            background-color: #f4f4f4;
+        }
+
+        h1 {
+            color: #333;
+            text-align: center;
+        }
+
+        ul {
+            list-style-type: none;
+            padding: 0;
+        }
+
+        li {
+            margin-bottom: 20px;
+            background-color: #fff;
+            padding: 15px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        form {
+            border: 1px solid #ccc;
+            padding: 20px;
+            border-radius: 8px;
+            background-color: #fff;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            color: #555;
+        }
+
+        input, button {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            margin-bottom: 15px;
+        }
+
+        .custom-file-upload {
+            background-color: #4CAF50;
+            color: white;
+            padding: 10px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            display: inline-block;
+            width: auto;
+        }
+
+        .custom-file-upload:hover {
+            background-color: #45a049;
+        }
+
+        .image-container {
+            display: inline-block;
+            padding: 10px;
+            background-color: #87CEEB;
+            border-radius: 8px;
+        }
+
+        img {
+            max-width: 100%;
+            max-height: 200px;
+            border-radius: 5px;
+        }
+
+        button {
+            background-color: #008CBA;
+            color: white;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #007399;
+        }
+    </style>
+  <!-- JavaScript for previewing the before photo -->
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const beforePhotoInput = document.getElementById('before-photo-input');
+        const beforePhotoPreview = document.getElementById('before-photo-preview');
+
+        const assetIdInput = document.querySelector('[name="asset_id"]');
+
+        beforePhotoInput.addEventListener('change', function() {
+            const file = this.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    beforePhotoPreview.innerHTML = `<img src="${e.target.result}" alt="Before Photo">`;
+                };
+                reader.readAsDataURL(file);
+            } else {
+                beforePhotoPreview.innerHTML = '';
+            }
+        });
+
+        // Trigger change event on file input when "Choose File" button is clicked
+        document.getElementById('before-photo-upload-btn').addEventListener('click', function() {
+            beforePhotoInput.click();
+        });
+    });
+
+    document.addEventListener('DOMContentLoaded', function() {
+        const afterPhotoInput = document.getElementById('after-photo-input');
+        const afterPhotoPreview = document.getElementById('after-photo-preview');
+
+        afterPhotoInput.addEventListener('change', function() {
+            const file = this.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    afterPhotoPreview.innerHTML = `<img src="${e.target.result}" alt="After Photo">`;
+                };
+                reader.readAsDataURL(file);
+            } else {
+                afterPhotoPreview.innerHTML = '';
+            }
+        });
+
+        // Trigger change event on file input when "Choose File" button is clicked
+        document.getElementById('after-photo-upload-btn').addEventListener('click', function() {
+            afterPhotoInput.click();
+        });
+    });
+</script>
+
+</head>
+<body>
+    <h1>Vandalism Register</h1>
+    <ul>
+
+            <li>
+
+                <form method="post" action="{% url 'log_vandalism' asset.asset_id %}" enctype="multipart/form-data">
+
+                    <label for="date">Date:</label>
+                    <input type="date" name="date" required>
+                    <br>
+                    <label for="location">Location:</label>
+                    <input type="text" name="location" required>
+                    <br>
+                    <label for="asset_id">Asset ID:</label>
+<input type="text" name="asset_id" required>
+<br>
+
+                    <label for="time">Time:</label>
+                    <input type="time" name="time" required>
+                    <br>
+                    <!-- ... (inside the form) ... -->
+<label for="before_photo">Before Photo:</label>
+<input type="file" name="before_photo" accept="image/*" id="before-photo-input" style="display: none;">
+<label class="custom-file-upload" for="before-photo-input" id="before-photo-upload-btn">Choose File</label>
+<div class="image-container" id="before-photo-preview"></div>
+<br>
+                   <label for="after_photo">After Photo:</label>
+<input type="file" name="after_photo" accept="image/*" id="after-photo-input" style="display: none;">
+<label class="custom-file-upload" for="after-photo-input" id="after-photo-upload-btn">Choose File</label>
+<div class="image-container" id="after-photo-preview"></div>
+<br>
+                    <button type="submit">Log Vandalism</button>
+                </form>
+            </li>
+
+    </ul>
+</body>
+</html>
